@@ -1,0 +1,18 @@
+local GamePassId = "YOUR_GAMEPASS_ID_HERE" -- Replace with your actual game pass ID
+
+game.Players.PlayerAdded:Connect(function(player)
+    local hasGamePass = false
+
+    -- Check if the player owns the game pass
+    pcall(function()
+        hasGamePass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(player.UserId, GamePassId)
+    end)
+
+    if hasGamePass then
+        -- Grant access to exclusive areas or provide special abilities
+        print(player.Name .. " owns the game pass!")
+    else
+        -- Restrict access or offer incentives to purchase the game pass
+        print(player.Name .. " does not own the game pass.")
+    end
+end)
