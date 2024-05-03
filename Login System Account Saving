@@ -1,0 +1,51 @@
+local Players = game:GetService("Players")
+local DataStoreService = game:GetService("DataStoreService")
+local AccountDataStore = DataStoreService:GetDataStore("AccountData")
+
+function PlayerJoined(player)
+    local leaderstats = Instance.new("Folder")
+    leaderstats.Name = "leaderstats"
+    leaderstats.Parent = player
+
+    local coins = Instance.new("IntValue")
+    coins.Name = "Coins"
+    coins.Value = 0
+    coins.Parent = leaderstats
+
+    local savedData = LoadPlayerData(player)
+    if savedData then
+        coins.Value = savedData.Coins or 0
+    else
+        SavePlayerData(player, {Coins = 0})
+    end
+end
+
+function PlayerLeaving(player)
+    SavePlayerData(player, {
+        Coins = player.leaderstats.Coins.Value
+    })
+end
+
+function LoadPlayerData(player)
+    local success, data = pcall(function()
+        return AccountDataStore:GetAsync(tostring(player.UserId))
+    end)
+    if success then
+        return data
+    else
+        warn("Failed to load data for player " .. player.Name .. ": " .. data)
+        return nil
+    end
+end
+
+function SavePlayerData(player, data)
+    local success, error = pcall(function()
+        AccountDataStore:SetAsync(tostring(player.UserId), data)
+    end)
+    if not success then
+        warn("Failed to save data for player " .. player.Name .. ": " .. error)
+    end
+end
+
+Players.PlayerAdded:Connect(PlayerJoined)
+Players.PlayerRemoving:Connect(PlayerLeaving)
