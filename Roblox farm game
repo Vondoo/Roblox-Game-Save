@@ -1,0 +1,91 @@
+local ToolService = game:GetService("ToolService")
+local Players = game:GetService("Players")
+
+-- Define tool names
+local SEED_TOOL_NAME = "SeedTool"
+local WATER_TOOL_NAME = "WateringCan"
+local HARVEST_TOOL_NAME = "HarvestTool"
+local FEED_TOOL_NAME = "FeedTool"
+
+-- Function to handle tool activation
+local function onActivated(tool)
+    local player = Players:GetPlayerFromCharacter(tool.Parent)
+    if not player then return end
+
+    -- Determine the tool type
+    if tool.Name == SEED_TOOL_NAME then
+        -- Handle planting seeds
+        -- Example: Plant seed at the player's current position
+        local seed = Instance.new("Part")
+        seed.Name = "Seed"
+        seed.Size = Vector3.new(1, 1, 1)
+        seed.Position = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+        seed.Anchored = true
+        seed.Parent = game.Workspace
+        -- You can customize this part to look like a seed or a plant
+
+    elseif tool.Name == WATER_TOOL_NAME then
+        -- Handle watering plants
+        -- Example: Find nearby plants and water them
+        local nearbyPlants = game.Workspace:FindPartsInRegion3(
+            Region3.new(tool.Handle.Position - Vector3.new(5, 5, 5), tool.Handle.Position + Vector3.new(5, 5, 5)),
+            nil,
+            math.huge
+        )
+        for _, part in ipairs(nearbyPlants) do
+            if part.Name == "Plant" then
+                -- You can add water effects or animations here
+            end
+        end
+
+    elseif tool.Name == HARVEST_TOOL_NAME then
+        -- Handle harvesting crops
+        -- Example: Find nearby mature crops and harvest them
+        local nearbyCrops = game.Workspace:FindPartsInRegion3(
+            Region3.new(tool.Handle.Position - Vector3.new(5, 5, 5), tool.Handle.Position + Vector3.new(5, 5, 5)),
+            nil,
+            math.huge
+        )
+        for _, part in ipairs(nearbyCrops) do
+            if part.Name == "Crop" and part.CropState.Value == "Mature" then
+                -- You can give rewards or collect harvested crops here
+                part:Destroy()
+            end
+        end
+
+    elseif tool.Name == FEED_TOOL_NAME then
+        -- Handle feeding animals
+        -- Example: Find nearby animals and feed them
+        local nearbyAnimals = game.Workspace:FindPartsInRegion3(
+            Region3.new(tool.Handle.Position - Vector3.new(5, 5, 5), tool.Handle.Position + Vector3.new(5, 5, 5)),
+            nil,
+            math.huge
+        )
+        for _, part in ipairs(nearbyAnimals) do
+            if part.Name == "Animal" then
+                -- You can add feeding animations or effects here
+            end
+        end
+    end
+end
+
+-- Create tools
+local seedTool = Instance.new("Tool")
+seedTool.Name = SEED_TOOL_NAME
+seedTool.Activated:Connect(onActivated)
+seedTool.Parent = ToolService
+
+local waterTool = Instance.new("Tool")
+waterTool.Name = WATER_TOOL_NAME
+waterTool.Activated:Connect(onActivated)
+waterTool.Parent = ToolService
+
+local harvestTool = Instance.new("Tool")
+harvestTool.Name = HARVEST_TOOL_NAME
+harvestTool.Activated:Connect(onActivated)
+harvestTool.Parent = ToolService
+
+local feedTool = Instance.new("Tool")
+feedTool.Name = FEED_TOOL_NAME
+feedTool.Activated:Connect(onActivated)
+feedTool.Parent = ToolService
