@@ -1,0 +1,16 @@
+local BadgeId = "YOUR_BADGE_ID_HERE" -- Replace with your actual badge ID
+
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        -- Check if the player already owns the badge
+        if not player:FindFirstChild(BadgeId) then
+            -- Award the badge to the player
+            local badge = Instance.new("BadgeService")
+            badge.Name = BadgeId
+            badge.UserId = player.UserId
+            badge.Parent = player
+            badge:SetBadge(BadgeId)
+            print(player.Name .. " has earned the badge!")
+        end
+    end)
+end)
