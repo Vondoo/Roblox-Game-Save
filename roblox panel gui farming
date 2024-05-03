@@ -1,0 +1,54 @@
+-- Define GUI properties
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Name = "FarmingToolsGUI"
+ScreenGui.Enabled = true
+
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 200, 0, 300)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -150)
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BorderSizePixel = 0
+
+-- Function to create a tool button
+local function createToolButton(toolName, toolImage, toolFunction)
+    local ToolButton = Instance.new("ImageButton")
+    ToolButton.Parent = Frame
+    ToolButton.Size = UDim2.new(0, 150, 0, 50)
+    ToolButton.Position = UDim2.new(0.5, -75, 0.1, 0)
+    ToolButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToolButton.BorderSizePixel = 0
+    ToolButton.Image = toolImage
+    ToolButton.MouseButton1Click:Connect(toolFunction)
+
+    local ToolNameLabel = Instance.new("TextLabel")
+    ToolNameLabel.Parent = ToolButton
+    ToolNameLabel.Size = UDim2.new(1, 0, 1, 0)
+    ToolNameLabel.Position = UDim2.new(0, 0, 0, 0)
+    ToolNameLabel.BackgroundTransparency = 1
+    ToolNameLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+    ToolNameLabel.Text = toolName
+    ToolNameLabel.TextSize = 20
+end
+
+-- Create tool buttons
+createToolButton("Plant Seeds", "rbxassetid://123456", function()
+    -- Functionality for planting seeds
+    print("Planting seeds...")
+end)
+
+createToolButton("Water Plants", "rbxassetid://234567", function()
+    -- Functionality for watering plants
+    print("Watering plants...")
+end)
+
+createToolButton("Harvest Crops", "rbxassetid://345678", function()
+    -- Functionality for harvesting crops
+    print("Harvesting crops...")
+end)
+
+createToolButton("Feed Animals", "rbxassetid://456789", function()
+    -- Functionality for feeding animals
+    print("Feeding animals...")
+end)
